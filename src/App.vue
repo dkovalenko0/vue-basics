@@ -1,12 +1,43 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <h1>Todo application</h1>
+    <hr />
+    <router-view />
   </div>
 </template>
+
+<script>
+import TodoList from "@/components/TodoList";
+import AddTodo from "@/components/AddTodo";
+
+export default {
+  name: "app",
+  data() {
+    return {
+      todos: []
+    };
+  },
+  mounted() {
+    fetch("https://jsonplaceholder.typicode.com/todos?_limit=3")
+      .then(response => response.json())
+      .then(json => {
+        this.todos = json;
+      });
+  },
+  methods: {
+    removeTodo(id) {
+      this.todos = this.todos.filter(t => t.id !== id);
+    },
+    addTodo(todo) {
+      this.todos.push(todo);
+    }
+  },
+  components: {
+    TodoList,
+    AddTodo
+  }
+};
+</script>
 
 <style>
 #app {
